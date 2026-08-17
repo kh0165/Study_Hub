@@ -1,8 +1,8 @@
-# Study Hub 📚
+# Study Hub 
 
 Study Hub is a web application designed to help students organize and manage their academic life in one place.
 
-## ✨ Features
+##  Features
 
 - User Registration and Login
 - User Profile Management
@@ -22,7 +22,7 @@ Study Hub is a web application designed to help students organize and manage the
 - AI Chatbot
 - Responsive User Interface
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 ### Backend
 - Python
@@ -41,9 +41,8 @@ Study Hub is a web application designed to help students organize and manage the
 - GitHub
 - Gmail SMTP
 
-## 📂 Project Structure
+##  Project Structure
 
-\`\`\`text
 study-hub/
 │
 ├── accounts/          # Authentication and user accounts
@@ -59,48 +58,28 @@ study-hub/
 ├── .gitignore
 ├── .env               # Environment variables (not uploaded to GitHub)
 └── README.md
-\`\`\`
 
-## ⚙️ Installation
 
-### 1. Clone the Repository
-
-\`\`\`bash
+## Installation
+1. Clone the Repository
 git clone https://github.com/kh0165/Study_Hub.git
 cd Study_Hub
-\`\`\`
 
-### 2. Create a Virtual Environment
-
-\`\`\`bash
+2. Create a Virtual Environment
 python -m venv venv
-\`\`\`
 
-### 3. Activate the Virtual Environment
-
-#### macOS / Linux
-
-\`\`\`bash
+3. Activate the Virtual Environment
+macOS / Linux
 source venv/bin/activate
-\`\`\`
 
-#### Windows
-
-\`\`\`bash
+Windows
 venv\Scripts\activate
-\`\`\`
 
-### 4. Install Dependencies
-
-\`\`\`bash
+4. Install Dependencies
 pip install -r requirements.txt
-\`\`\`
 
-### 5. Create a `.env` File
-
-Create a `.env` file in the project root and add:
-
-\`\`\`env
+5. Create a .env File
+Create a .env file in the project root and add:
 DB_NAME=final_project_db
 DB_USER=postgres
 DB_PASSWORD=your_database_password
@@ -109,57 +88,34 @@ DB_PORT=5432
 
 EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_gmail_app_password
-\`\`\`
 
-> ⚠️ Never upload your `.env` file to GitHub because it contains sensitive information.
+⚠️ Never upload your .env file to GitHub because it contains sensitive information.
 
-### 6. Create the PostgreSQL Database
-
+6. Create the PostgreSQL Database
 Create a PostgreSQL database named:
-
-\`\`\`text
 final_project_db
-\`\`\`
 
-### 7. Apply Migrations
-
-\`\`\`bash
+7. Apply Migrations
 python manage.py migrate
-\`\`\`
 
-### 8. Run the Project
-
-\`\`\`bash
+8. Run the Project
 python manage.py runserver
-\`\`\`
-
 Then open:
-
-\`\`\`text
 http://127.0.0.1:8000/
-\`\`\`
 
-## 📧 Password Reset
-
+##  Password Reset
 The project supports password reset via email using Gmail SMTP.
-
 Users can:
-
-1. Open the Forgot Password page.
-2. Enter their registered email address.
-3. Receive a password reset link.
-4. Set a new password.
-5. Log in with the new password.
-
+Open the Forgot Password page.
+Enter their registered email address.
+Receive a password reset link.
+Set a new password.
+Log in with the new password.
 For Gmail SMTP, use a Google App Password instead of your normal Gmail password.
 
-## 🔐 Environment Variables
-
+##  Environment Variables
 The project uses environment variables to keep sensitive information secure.
-
 Example:
-
-\`\`\`env
 DB_NAME=final_project_db
 DB_USER=postgres
 DB_PASSWORD=your_database_password
@@ -168,14 +124,9 @@ DB_PORT=5432
 
 EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_gmail_app_password
-\`\`\`
 
-## 🚀 Git Workflow
-
+##  Git Workflow
 After making changes:
-
-\`\`\`bash
 git add .
 git commit -m "Describe your changes"
 git push
-\`\`\`
