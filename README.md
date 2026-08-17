@@ -43,6 +43,7 @@ Study Hub is a web application designed to help students organize and manage the
 
 ##  Project Structure
 
+```text
 study-hub/
 │
 ├── accounts/          # Authentication and user accounts
@@ -58,6 +59,7 @@ study-hub/
 ├── .gitignore
 ├── .env               # Environment variables (not uploaded to GitHub)
 └── README.md
+```
 
 
 ## Installation
