@@ -1,0 +1,27 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Choose Your Role — Study Hub{% endblock %}
+
+{% block auth_content %}
+<div class="auth-card auth-card-wide">
+    <h1>How will you use Study Hub?</h1>
+    <p class="auth-subtitle">Select one or more roles that describe you best</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-checkbox-group">
+            {% for role in roles %}
+                <label class="form-checkbox-label">
+                    <input type="checkbox" name="roles" value="{{ role.id }}">
+                    {{ role.get_name_display }}
+                </label>
+            {% endfor %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

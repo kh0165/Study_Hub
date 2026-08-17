@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    New Search - InsightAI
+{% endblock %}
+
+
+{% block content %}
+
+<h1>
+    New Search
+</h1>
+
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <label>
+        What do you want to search for?
+    </label>
+
+    <br><br>
+
+    <input
+        type="text"
+        name="query"
+        placeholder="Example: Python Developers"
+        required
+    >
+
+    <br><br>
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+
+{% endblock %}

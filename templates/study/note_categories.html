@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Note Categories — Study Hub{% endblock %}
+{% block page_heading %}Note Categories{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">Note Categories</h1>
+        <p class="page-subtitle">Organize your notes with custom categories.</p>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'create_note_category' %}" class="btn btn-primary">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Category
+        </a>
+    </div>
+</div>
+
+{% if categories %}
+    <div class="card-grid">
+        {% for category in categories %}
+            <article class="card-item">
+                <h3 class="card-item-title">{{ category.name }}</h3>
+                <div class="card-item-meta">
+                    <span class="badge badge-neutral">{{ category.notes.count }} note{{ category.notes.count|pluralize }}</span>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        </div>
+        <h3>No categories yet</h3>
+        <p>Create categories to organize your notes by topic or type.</p>
+        <a href="{% url 'create_note_category' %}" class="btn btn-primary">Add Category</a>
+    </div>
+{% endif %}
+
+{% endblock %}

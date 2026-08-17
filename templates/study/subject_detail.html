@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ subject.name }} — Study Hub{% endblock %}
+{% block page_heading %}{{ subject.name }}{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb">
+    <a href="{% url 'subject_list' %}">Subjects</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>{{ subject.name }}</span>
+</div>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">{{ subject.name }}</h1>
+        {% if subject.description %}
+            <p class="page-subtitle">{{ subject.description }}</p>
+        {% else %}
+            <p class="page-subtitle text-muted">No description available.</p>
+        {% endif %}
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'create_note' subject.id %}" class="btn btn-secondary btn-sm">Add Note</a>
+        <a href="{% url 'create_resource' subject.id %}" class="btn btn-secondary btn-sm">Add Resource</a>
+        <a href="{% url 'create_analysis' %}" class="btn btn-primary btn-sm">AI Analysis</a>
+    </div>
+</div>
+
+<div class="subject-sections">
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Courses</h2>
+    
+            <a href="{% url 'create_course' subject.id %}" class="btn btn-primary btn-sm">
+                Add Course
+            </a>
+        </div>
+    
+        <div class="card-body">
+    
+            {% if courses %}
+    
+                <div class="card-grid">
+    
+                    {% for course in courses %}
+    
+                        <article class="card-item">
+    
+                            <h3 class="card-item-title">
+                                <a href="{% url 'course_detail' course.id %}">
+                                    {{ course.title }}
+                                </a>
+                            </h3>
+    
+                            {% if course.description %}
+                                <p class="card-item-desc">
+                                    {{ course.description|truncatewords:20 }}
+                                </p>
+                            {% endif %}
+    
+                            <div class="card-item-meta">
+    
+                                <span>
+                                    {{ course.created_at|date:"M d, Y" }}
+                                </span>
+    
+                                <div>
+                                    <a href="{% url 'edit_course' course.id %}"
+                                       class="btn btn-ghost btn-sm">
+                                        Edit
+                                    </a>
+    
+                                    <a href="{% url 'delete_course' course.id %}"
+                                       class="btn btn-danger-outline btn-sm">
+                                        Delete
+                                    </a>
+                                </div>
+    
+                            </div>
+    
+                        </article>
+    
+                    {% endfor %}
+    
+                </div>
+    
+            {% else %}
+    
+                <div class="empty-state" style="padding: 2rem;">
+    
+                    <h3>No courses yet</h3>
+    
+                    <p>
+                        Add courses related to this subject.
+                    </p>
+    
+                    <a href="{% url 'create_course' subject.id %}"
+                       class="btn btn-primary btn-sm">
+                        Add Course
+                    </a>
+    
+                </div>
+    
+            {% endif %}
+    
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Resources</h2>
+            <a href="{% url 'create_resource' subject.id %}" class="btn btn-primary btn-sm">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Resource
+            </a>
+        </div>
+        <div class="card-body">
+            {% if resources %}
+                <div class="card-grid">
+                    {% for resource in resources %}
+                        <article class="card-item">
+                            <h3 class="card-item-title">
+                                <a href="{% url 'resource_detail' resource.id %}">{{ resource.title }}</a>
+                            </h3>
+                            {% if resource.description %}
+                                <p class="card-item-desc">{{ resource.description|truncatewords:15 }}</p>
+                            {% endif %}
+                            <div class="card-item-meta">
+                                <span class="badge badge-neutral">{{ resource.get_resource_type_display }}</span>
+                                <a href="{{ resource.link }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">
+                                    Open
+                                    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state" style="padding: 2rem;">
+                    <h3>No resources yet</h3>
+                    <p>Add links, videos, and articles for this subject.</p>
+                    <a href="{% url 'create_resource' subject.id %}" class="btn btn-primary btn-sm">Add Resource</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Notes</h2>
+            <a href="{% url 'create_note' subject.id %}" class="btn btn-primary btn-sm">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Note
+            </a>
+        </div>
+        <div class="card-body">
+            {% if notes %}
+                <div class="activity-list">
+                    {% for note in notes %}
+                        <div class="activity-item">
+                            <div>
+                                <h4><a href="{% url 'note_detail' note.id %}">{{ note.title }}</a></h4>
+                                <p>{{ note.content|truncatewords:20 }}</p>
+                            </div>
+                            <span class="activity-date">{{ note.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state" style="padding: 2rem;">
+                    <h3>No notes yet</h3>
+                    <p>Start taking notes for this subject.</p>
+                    <a href="{% url 'create_note' subject.id %}" class="btn btn-primary btn-sm">Add Note</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid-2">
+
+        <div class="card">
+    
+            <div class="card-header">
+                <h2>Assignments</h2>
+    
+                <a
+                    href="{% url 'create_assignment' subject.id %}"
+                    class="btn btn-primary btn-sm"
+                >
+                    Add Assignment
+                </a>
+            </div>
+    
+            <div class="card-body">
+    
+                {% if assignments %}
+    
+                    <div class="activity-list">
+    
+                        {% for assignment in assignments %}
+    
+                            <div class="activity-item">
+    
+                                <div>
+    
+                                    <h4>
+                                        <a href="{% url 'assignment_detail' assignment.id %}">
+                                            {{ assignment.title }}
+                                        </a>
+                                    </h4>
+    
+                                    {% if assignment.description %}
+                                        <p>
+                                            {{ assignment.description|truncatewords:15 }}
+                                        </p>
+                                    {% endif %}
+    
+                                    <p>
+    
+                                        {% if assignment.status == 'completed' %}
+                                            <span class="badge badge-success">
+                                                Completed
+                                            </span>
+    
+                                        {% elif assignment.status == 'in_progress' %}
+                                            <span class="badge badge-warning">
+                                                In Progress
+                                            </span>
+    
+                                        {% else %}
+                                            <span class="badge badge-neutral">
+                                                Pending
+                                            </span>
+                                        {% endif %}
+    
+                                        {% if assignment.due_date %}
+                                            <span class="badge badge-neutral">
+                                                Due {{ assignment.due_date }}
+                                            </span>
+                                        {% endif %}
+    
+                                    </p>
+    
+                                </div>
+    
+                            </div>
+    
+                        {% endfor %}
+    
+                    </div>
+    
+                {% else %}
+    
+                    <div class="empty-state" style="padding: 2rem;">
+    
+                        <h3>No assignments yet</h3>
+    
+                        <p>
+                            Add assignments for this subject.
+                        </p>
+    
+                        <a
+                            href="{% url 'create_assignment' subject.id %}"
+                            class="btn btn-primary btn-sm"
+                        >
+                            Add Assignment
+                        </a>
+    
+                    </div>
+    
+                {% endif %}
+    
+            </div>
+    
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Progress</h2>
+            </div>
+        
+            <div class="card-body">
+        
+                <div class="subject-progress">
+                    <div
+                        class="subject-progress-fill"
+                        data-progress="{{ progress }}"
+                    ></div>
+                </div>
+        
+                <p style="margin-top: 10px;">
+                    Progress: {{ progress }}%
+                </p>
+        
+            </div>
+        </div>
+
+</div>
+
+<a href="{% url 'subject_list' %}" class="back-link" style="margin-top: 1.5rem;">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to My Subjects
+</a>
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/subject_progress.js' %}"></script>
+{% endblock %}

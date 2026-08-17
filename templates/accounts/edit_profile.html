@@ -1,0 +1,137 @@
+
+{% extends "base.html" %}
+
+{% block title %}Edit Profile | Study Hub{% endblock %}
+
+{% block page_heading %}Edit Profile{% endblock %}
+
+{% block content %}
+
+<div class="page-header profile-edit-header">
+    <div>
+        <span class="eyebrow">ACCOUNT</span>
+        <h1>Edit Profile</h1>
+        <p>Update your personal information.</p>
+    </div>
+</div>
+
+
+<div class="card profile-edit-card">
+
+    <div class="card-body">
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="profile-edit-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- Profile Picture -->
+
+            <div class="profile-picture-edit">
+
+                <div class="profile-picture-preview">
+
+                    {% if profile.profile_picture %}
+                        <img
+                            src="{{ profile.profile_picture.url }}"
+                            alt="Profile picture"
+                        >
+                    {% else %}
+                        {{ user.username|first|upper }}
+                    {% endif %}
+
+                </div>
+
+                <div class="profile-picture-info">
+
+                    <strong>Profile Picture</strong>
+
+                    <span>
+                        Choose a new image to update your profile picture.
+                    </span>
+
+                    <input
+                        type="file"
+                        name="profile_picture"
+                        accept="image/*"
+                        class="form-input"
+                        style="margin-top: 0.75rem;"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Full Name -->
+
+            <div class="form-group">
+
+                <label class="form-label" for="name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-input"
+                    value="{{ user.first_name }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="form-group">
+
+                <label class="form-label" for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
+                    value="{{ user.email }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Actions -->
+
+            <div class="profile-edit-actions">
+
+                <a
+                    href="{% url 'profile' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

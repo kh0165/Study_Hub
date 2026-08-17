@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}AI Analysis | Study Hub{% endblock %}
+
+{% block page_heading %}AI Analysis{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <span class="eyebrow">AI STUDY ASSISTANT</span>
+        <h1>Analyze Your Notes</h1>
+        <p>Choose one of your notes and let AI summarize or explain it.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+
+        {% if error %}
+            <div class="alert alert-error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if notes %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label class="form-label" for="note_id">
+                    Select Note
+                </label>
+
+                <select
+                    name="note_id"
+                    id="note_id"
+                    class="form-input"
+                    required
+                >
+
+                    <option value="">
+                        -- Select a note --
+                    </option>
+
+                    {% for note in notes %}
+
+                        <option value="{{ note.id }}">
+                            {{ note.title }}
+                            {% if note.subject %}
+                                — {{ note.subject.name }}
+                            {% endif %}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Choose Analysis Type
+                </label>
+
+                <select name="analysis_type" class="form-input" required >
+
+                    <option value="">
+                        -- Select type --
+                    </option>
+
+                    <option value="summarize">
+                        Summarize
+                    </option>
+
+                    <option value="explain">
+                        Explain
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'analysis_list' %}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Analyze with AI
+                </button>
+
+            </div>
+
+        </form>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>No Notes Available</h3>
+
+                <p>
+                    Create a note first, then you can analyze it using AI.
+                </p>
+
+                <a
+                    href="{% url 'subject_list' %}"
+                    class="btn btn-primary"
+                >
+                    Go to Subjects
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

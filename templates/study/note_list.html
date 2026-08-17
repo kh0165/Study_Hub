@@ -1,0 +1,279 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}My Notes — Study Hub{% endblock %}
+{% block page_heading %}My Notes{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">My Notes</h1>
+        <p class="page-subtitle">All your study notes in one place.</p>
+    </div>
+</div>
+
+
+<div class="filter-bar">
+
+    <form method="GET" class="filter-group">
+
+        <label for="q">Search notes</label>
+
+        <div class="filter-inline">
+
+            <input
+                type="text"
+                id="q"
+                name="q"
+                class="form-input"
+                placeholder="Search notes..."
+                value="{{ query }}"
+            >
+
+            <button type="submit" class="btn btn-secondary">
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <form method="GET" class="filter-group">
+
+        <label for="category">Filter by category</label>
+
+        <div class="filter-inline">
+
+            <select
+                id="category"
+                name="category"
+                class="form-select"
+            >
+
+                <option value="">
+                    All Categories
+                </option>
+
+                {% for category in categories %}
+
+                    <option
+                        value="{{ category.id }}"
+                        {% if selected_category == category.id|stringformat:"s" %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ category.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button type="submit" class="btn btn-secondary">
+                Filter
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+{% if notes %}
+
+    <div class="card-grid">
+
+        {% for note in notes %}
+
+            <article class="card-item note-card">
+
+                <h2 class="card-item-title">
+
+                    <a href="{% url 'note_detail' note.id %}">
+                        {{ note.title }}
+                    </a>
+
+                </h2>
+
+
+                <p class="card-item-desc">
+                    {{ note.content|truncatewords:25 }}
+                </p>
+
+
+                <div class="card-item-meta">
+
+                    <span class="badge badge-neutral">
+                        {{ note.subject.name }}
+                    </span>
+
+
+                    {% if note.category %}
+
+                        <span class="badge badge-primary">
+                            {{ note.category.name }}
+                        </span>
+
+                    {% endif %}
+
+
+                    <span>
+                        {{ note.created_at|date:"M d, Y" }}
+                    </span>
+
+                </div>
+
+            </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- Pagination -->
+
+    {% if page_obj.paginator.num_pages > 1 %}
+
+        <nav
+            class="pagination"
+            aria-label="Notes pagination"
+        >
+
+            <!-- Previous -->
+
+            {% if page_obj.has_previous %}
+
+                <a
+                    href="?q={{ query|urlencode }}&category={{ selected_category }}&page={{ page_obj.previous_page_number }}"
+                    class="pagination-btn"
+                >
+                    Previous
+                </a>
+
+            {% else %}
+
+                <span class="pagination-btn disabled">
+                    Previous
+                </span>
+
+            {% endif %}
+
+
+            <!-- Page Numbers -->
+
+            <div class="pagination-pages">
+
+                {% for num in page_obj.paginator.page_range %}
+
+                    {% if page_obj.number == num %}
+
+                        <span class="pagination-btn active">
+                            {{ num }}
+                        </span>
+
+                    {% else %}
+
+                        <a
+                            href="?q={{ query|urlencode }}&category={{ selected_category }}&page={{ num }}"
+                            class="pagination-btn"
+                        >
+                            {{ num }}
+                        </a>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Next -->
+
+            {% if page_obj.has_next %}
+
+                <a
+                    href="?q={{ query|urlencode }}&category={{ selected_category }}&page={{ page_obj.next_page_number }}"
+                    class="pagination-btn"
+                >
+                    Next
+                </a>
+
+            {% else %}
+
+                <span class="pagination-btn disabled">
+                    Next
+                </span>
+
+            {% endif %}
+
+        </nav>
+
+    {% endif %}
+
+
+{% else %}
+
+    <div class="empty-state">
+
+        <div class="empty-state-icon">
+
+            <svg
+                class="icon icon-lg"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+            </svg>
+
+        </div>
+
+
+        <h3>
+            No notes found
+        </h3>
+
+
+        <p>
+
+            {% if request.GET.q or request.GET.category %}
+
+                Try adjusting your search or filters.
+
+            {% else %}
+
+                Create notes from a subject page to get started.
+
+            {% endif %}
+
+        </p>
+
+
+        <a
+            href="{% url 'subject_list' %}"
+            class="btn btn-primary"
+        >
+            Go to Subjects
+        </a>
+
+    </div>
+
+{% endif %}
+
+
+{% block extra_js %}
+
+    <script src="{% static 'js/notes.js' %}"></script>
+
+{% endblock %}
+
+
+{% endblock %}
+

@@ -1,0 +1,441 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard — Study Hub{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">Welcome back</h1>
+        <p class="page-subtitle">Here's your study overview for today.</p>
+    </div>
+
+    <div class="page-actions">
+        <a href="{% url 'subject_list' %}" class="btn btn-secondary">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            My Subjects
+        </a>
+
+        <a href="{% url 'export_pdf' %}" class="btn btn-secondary">
+            Export PDF
+        </a>
+    </div>
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-indigo">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+        </div>
+        <div>
+            <p class="stat-label">Subjects</p>
+            <p class="stat-value">{{ total_subjects }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-emerald">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+            </svg>
+        </div>
+        <div>
+            <p class="stat-label">Notes</p>
+            <p class="stat-value">{{ total_notes }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-violet">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+            </svg>
+        </div>
+        <div>
+            <p class="stat-label">Courses</p>
+            <p class="stat-value">{{ total_courses }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-sky">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+        </div>
+        <div>
+            <p class="stat-label">Resources</p>
+            <p class="stat-value">{{ total_resources }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-amber">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+        </div>
+        <div>
+            <p class="stat-label">Tasks</p>
+            <p class="stat-value">{{ total_tasks }}</p>
+            <span class="stat-detail">{{ completed_tasks }} completed</span>
+        </div>
+    </div>
+
+</div>
+
+
+<section class="section">
+    <div class="section-header">
+        <h2 class="section-title">Quick Actions</h2>
+    </div>
+
+    <div class="quick-actions">
+
+        <a href="{% url 'create_subject' %}" class="btn btn-primary">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Add Subject
+        </a>
+
+        <a href="{% url 'task_list' %}" class="btn btn-secondary">
+            Study Planner
+        </a>
+
+        <a href="{% url 'note_list' %}" class="btn btn-secondary">
+            My Notes
+        </a>
+
+        <a href="{% url 'create_analysis' %}" class="btn btn-secondary">
+            AI Analysis
+        </a>
+
+    </div>
+</section>
+
+
+
+<div class="grid-2">
+
+    <!-- Tasks Chart -->
+    <section class="section">
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Tasks Overview</h2>
+            </div>
+
+            <div class="card-body">
+                <div style="height: 300px;">
+                    <canvas
+                        id="tasksChart"
+                        data-completed="{{ completed_tasks }}"
+                        data-pending="{{ pending_tasks }}"
+                    ></canvas>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Assignments Chart -->
+    <section class="section">
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Assignments Overview</h2>
+            </div>
+
+            <div class="card-body">
+                <div style="height: 300px;">
+                    <canvas
+                        id="assignmentsChart"
+                        data-completed="{{ completed_assignments }}"
+                        data-pending="{{ pending_assignments }}"
+                        data-in-progress="{{ in_progress_assignments }}"
+                    ></canvas>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+
+
+
+
+<div class="grid-2">
+
+    <section class="section">
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Recent Notes</h2>
+
+                <a href="{% url 'note_list' %}" class="btn btn-ghost btn-sm">
+                    View all
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                {% if recent_notes %}
+
+                    <div class="activity-list">
+
+                        {% for note in recent_notes %}
+
+                            <div class="activity-item">
+
+                                <div>
+                                    <h4>
+                                        <a href="{% url 'note_detail' note.id %}">
+                                            {{ note.title }}
+                                        </a>
+                                    </h4>
+
+                                    <p>{{ note.subject.name }}</p>
+                                </div>
+
+                                <span class="activity-date">
+                                    {{ note.created_at|date:"M d, Y" }}
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state" style="padding: 2rem 1rem; border: none;">
+
+                        <p class="mb-2">
+                            No notes yet.
+                        </p>
+
+                        <a href="{% url 'note_list' %}" class="btn btn-secondary btn-sm">
+                            Browse notes
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Recent Tasks</h2>
+
+                <a href="{% url 'task_list' %}" class="btn btn-ghost btn-sm">
+                    View all
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                {% if recent_tasks %}
+
+                    <div class="activity-list">
+
+                        {% for task in recent_tasks %}
+
+                            <div class="activity-item">
+
+                                <div>
+
+                                    <h4>{{ task.title }}</h4>
+
+                                    <p>
+
+                                        {% if task.completed %}
+                                            <span class="badge badge-success">
+                                                Completed
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-warning">
+                                                Pending
+                                            </span>
+                                        {% endif %}
+
+                                        {% if task.due_date %}
+                                            <span class="badge badge-neutral">
+                                                Due {{ task.due_date }}
+                                            </span>
+                                        {% endif %}
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state" style="padding: 2rem 1rem; border: none;">
+
+                        <p class="mb-2">
+                            No tasks yet.
+                        </p>
+
+                        <a href="{% url 'create_task' %}" class="btn btn-secondary btn-sm">
+                            Add task
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<div class="grid-2">
+
+    <section class="section">
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Recent Resources</h2>
+            </div>
+
+            <div class="card-body">
+
+                {% if recent_resources %}
+
+                    <div class="activity-list">
+
+                        {% for resource in recent_resources %}
+
+                            <div class="activity-item">
+
+                                <div>
+
+                                    <h4>
+                                        <a href="{% url 'resource_detail' resource.id %}">
+                                            {{ resource.title }}
+                                        </a>
+                                    </h4>
+
+                                    <p>{{ resource.subject.name }}</p>
+
+                                </div>
+
+                                <span class="activity-date">
+                                    {{ resource.created_at|date:"M d, Y" }}
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state" style="padding: 2rem 1rem; border: none;">
+
+                        <p>
+                            No resources yet.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section">
+        <div class="card">
+
+            <div class="card-header">
+                <h2>Recent Courses</h2>
+            </div>
+
+            <div class="card-body">
+
+                {% if recent_courses %}
+
+                    <div class="activity-list">
+
+                        {% for course in recent_courses %}
+
+                            <div class="activity-item">
+
+                                <div>
+
+                                    <h4>{{ course.title }}</h4>
+
+                                    <p>{{ course.subject.name }}</p>
+
+                                </div>
+
+                                <span class="activity-date">
+                                    {{ course.created_at|date:"M d, Y" }}
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state" style="padding: 2rem 1rem; border: none;">
+
+                        <p>
+                            No courses yet.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% load static %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Add Subject — Study Hub{% endblock %}
+{% block page_heading %}Add Subject{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'subject_list' %}" class="back-link">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to subjects
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">Add New Subject</h1>
+        <p class="page-subtitle">Add a subject to organize your studies.</p>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="name">Subject Name</label>
+            <input type="text" id="name" name="name" class="form-input" placeholder="Example: Python" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">Description</label>
+            <textarea id="description" name="description" class="form-textarea" placeholder="Example: Python programming and OOP" rows="5"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Add Subject</button>
+            <a href="{% url 'subject_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

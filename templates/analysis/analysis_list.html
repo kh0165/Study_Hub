@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}AI Analysis — Study Hub{% endblock %}
+{% block page_heading %}AI Analysis{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">My Analyses</h1>
+        <p class="page-subtitle">Review and manage your AI-powered study analyses.</p>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'create_analysis' %}" class="btn btn-primary">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Analysis
+        </a>
+    </div>
+</div>
+
+{% if analyses %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for analysis in analyses %}
+                    <tr>
+                        <td><strong>{{ analysis.title }}</strong></td>
+                        <td><span class="badge badge-neutral">{{ analysis.get_analysis_type_display }}</span></td>
+                        <td><span class="badge badge-primary">{{ analysis.get_status_display }}</span></td>
+                        <td class="text-secondary">{{ analysis.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <div class="table-actions">
+                                <a href="{% url 'analysis_detail' analysis.id %}" class="btn btn-secondary btn-sm">View</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>No analyses yet</h3>
+        <p>Run your first AI analysis on study material to get insights.</p>
+        <a href="{% url 'create_analysis' %}" class="btn btn-primary">Create Analysis</a>
+    </div>
+{% endif %}
+
+{% endblock %}

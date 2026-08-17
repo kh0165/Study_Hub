@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Study Hub{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+{% block layout %}
+<div class="auth-layout">
+    <header class="auth-header">
+        <a href="{% url 'home' %}" class="auth-brand">
+            <span class="brand-icon">SH</span>
+            Study Hub
+        </a>
+    </header>
+    <main class="auth-main">
+        {% block auth_content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}
+
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ note.title }} — Study Hub{% endblock %}
+{% block page_heading %}{{ note.title }}{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb">
+    <a href="{% url 'note_list' %}">Notes</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>{{ note.title }}</span>
+</div>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">{{ note.title }}</h1>
+        <div class="detail-meta">
+            <span class="badge badge-neutral">
+                <a href="{% url 'subject_detail' note.subject.id %}">{{ note.subject.name }}</a>
+            </span>
+            {% if note.category %}
+                <span class="badge badge-primary">{{ note.category.name }}</span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'edit_note' note.id %}" class="btn btn-secondary btn-sm">Edit</a>
+        <a href="{% url 'delete_note' note.id %}" class="btn btn-danger-outline btn-sm">Delete</a>
+    </div>
+</div>
+
+<div class="detail-card">
+    <div class="detail-content">{{ note.content|linebreaks }}</div>
+    <div class="meta-row" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+        <span>Created {{ note.created_at|date:"M d, Y" }}</span>
+        <span>Updated {{ note.updated_at|date:"M d, Y" }}</span>
+    </div>
+</div>
+
+<a href="{% url 'subject_detail' note.subject.id %}" class="back-link">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to {{ note.subject.name }}
+</a>
+
+{% endblock %}

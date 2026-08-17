@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+
+{% block title %}My Assignments — Study Hub{% endblock %}
+{% block page_heading %}My Assignments{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-header">
+
+    <div class="page-header-text">
+        <h1 class="page-title">My Assignments</h1>
+
+        <p class="page-subtitle">
+            Manage all your assignments in one place.
+        </p>
+    </div>
+
+</div>
+
+
+{% if assignments %}
+
+    <div class="card-grid">
+
+        {% for assignment in assignments %}
+
+            <article class="card-item">
+
+                <h2 class="card-item-title">
+                    {{ assignment.title }}
+                </h2>
+
+
+                {% if assignment.description %}
+
+                    <p class="card-item-desc">
+                        {{ assignment.description|truncatewords:20 }}
+                    </p>
+
+                {% endif %}
+
+
+                <div class="card-item-meta">
+
+                    <!-- Subject -->
+
+                    <span class="badge badge-neutral">
+                        {{ assignment.subject.name }}
+                    </span>
+
+
+                    <!-- Status -->
+
+                    {% if assignment.status == 'completed' %}
+
+                        <span class="badge badge-success">
+                            Completed
+                        </span>
+
+                    {% elif assignment.status == 'in_progress' %}
+
+                        <span class="badge badge-warning">
+                            In Progress
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge badge-neutral">
+                            Pending
+                        </span>
+
+                    {% endif %}
+
+
+                    <!-- Due Date -->
+
+                    {% if assignment.due_date %}
+
+                        <span>
+                            Due {{ assignment.due_date|date:"M d, Y" }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div style="margin-top: 1rem;">
+
+                    <a
+                        href="{% url 'edit_assignment' assignment.id %}"
+                        class="btn btn-secondary btn-sm"
+                    >
+                        Edit
+                    </a>
+
+
+                    <form
+                        method="POST"
+                        action="{% url 'delete_assignment' assignment.id %}"
+                        style="display: inline;"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger-outline btn-sm"
+                            onclick="return confirm('Are you sure you want to delete this assignment?');"
+                        >
+                            Delete
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- Pagination -->
+
+    {% if page_obj.paginator.num_pages > 1 %}
+
+        <nav
+            class="pagination"
+            aria-label="Assignments pagination"
+        >
+
+            <!-- Previous -->
+
+            {% if page_obj.has_previous %}
+
+                <a
+                    href="?page={{ page_obj.previous_page_number }}"
+                    class="pagination-btn"
+                >
+                    Previous
+                </a>
+
+            {% else %}
+
+                <span class="pagination-btn disabled">
+                    Previous
+                </span>
+
+            {% endif %}
+
+
+            <!-- Page Numbers -->
+
+            <div class="pagination-pages">
+
+                {% for num in page_obj.paginator.page_range %}
+
+                    {% if page_obj.number == num %}
+
+                        <span class="pagination-btn active">
+                            {{ num }}
+                        </span>
+
+                    {% else %}
+
+                        <a
+                            href="?page={{ num }}"
+                            class="pagination-btn"
+                        >
+                            {{ num }}
+                        </a>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Next -->
+
+            {% if page_obj.has_next %}
+
+                <a
+                    href="?page={{ page_obj.next_page_number }}"
+                    class="pagination-btn"
+                >
+                    Next
+                </a>
+
+            {% else %}
+
+                <span class="pagination-btn disabled">
+                    Next
+                </span>
+
+            {% endif %}
+
+        </nav>
+
+    {% endif %}
+
+
+{% else %}
+
+    <div class="empty-state">
+
+        <h3>No assignments yet</h3>
+
+        <p>
+            You haven't created any assignments yet.
+        </p>
+
+    </div>
+
+{% endif %}
+
+
+{% endblock %}

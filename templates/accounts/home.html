@@ -1,0 +1,51 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Study Hub — Your Personal Learning Platform{% endblock %}
+
+{% block layout %}
+<div class="landing-layout">
+    <header class="landing-header">
+        <a href="{% url 'home' %}" class="auth-brand">
+            <span class="brand-icon">SH</span>
+            Study Hub
+        </a>
+        <nav class="landing-nav">
+            <a href="{% url 'login' %}" class="btn btn-secondary">Sign In</a>
+            <a href="{% url 'register' %}" class="btn btn-primary">Get Started</a>
+        </nav>
+    </header>
+
+    <section class="landing-hero">
+        <h1>Organize your learning.<br>Stay productive.</h1>
+        <p>Study Hub helps you manage subjects, notes, tasks, and resources — with AI-powered analysis to deepen your understanding.</p>
+        <div class="btn-group" style="justify-content: center;">
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg">Create Free Account</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary btn-lg">Sign In</a>
+        </div>
+    </section>
+
+    <section class="landing-features">
+        <div class="feature-card">
+            <div class="icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <h3>Subject Organization</h3>
+            <p>Group courses, notes, and resources by subject for a clear overview of your studies.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <h3>Study Planner</h3>
+            <p>Track tasks with priorities and due dates to stay on top of your deadlines.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon-wrap">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3>AI Analysis</h3>
+            <p>Analyze your study material with AI to extract insights and improve retention.</p>
+        </div>
+    </section>
+</div>
+{% endblock %}

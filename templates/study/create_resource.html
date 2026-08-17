@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Add Resource — Study Hub{% endblock %}
+{% block page_heading %}Add Resource{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'subject_detail' subject.id %}" class="back-link">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to {{ subject.name }}
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">Add Resource</h1>
+        <p class="page-subtitle">Subject: <strong>{{ subject.name }}</strong></p>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="title">Resource Title</label>
+            <input type="text" id="title" name="title" class="form-input" placeholder="Example: Django Tutorial" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">Description</label>
+            <textarea id="description" name="description" class="form-textarea" rows="5" placeholder="What is this resource about?"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="link">Resource Link</label>
+            <input type="url" id="link" name="link" class="form-input" placeholder="https://example.com" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="resource_type">Resource Type</label>
+            <select id="resource_type" name="resource_type" class="form-select">
+                <option value="video">Video</option>
+                <option value="article">Article</option>
+                <option value="website">Website</option>
+                <option value="pdf">PDF</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Resource</button>
+            <a href="{% url 'subject_detail' subject.id %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

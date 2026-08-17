@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} — Study Hub{% endblock %}
+{% block page_heading %}{{ resource.title }}{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb">
+    <a href="{% url 'subject_list' %}">Subjects</a>
+    <span class="breadcrumb-sep">/</span>
+    <a href="{% url 'subject_detail' resource.subject.id %}">{{ resource.subject.name }}</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>{{ resource.title }}</span>
+</div>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">{{ resource.title }}</h1>
+        <div class="detail-meta">
+            <span class="badge badge-neutral">{{ resource.subject.name }}</span>
+            <span class="badge badge-primary">{{ resource.get_resource_type_display }}</span>
+        </div>
+    </div>
+    <div class="page-actions">
+        <a href="{{ resource.link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+            Open Resource
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="{% url 'edit_resource' resource.id %}" class="btn btn-secondary btn-sm">Edit</a>
+        <a href="{% url 'delete_resource' resource.id %}" class="btn btn-danger-outline btn-sm">Delete</a>
+    </div>
+</div>
+
+<div class="detail-card">
+    <h3 style="margin: 0 0 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--color-text-secondary);">Description</h3>
+    {% if resource.description %}
+        <div class="detail-content">{{ resource.description|linebreaks }}</div>
+    {% else %}
+        <p class="text-muted">No description available.</p>
+    {% endif %}
+</div>
+
+<a href="{% url 'subject_detail' resource.subject.id %}" class="back-link" style="margin-top: 1.5rem;">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to {{ resource.subject.name }}
+</a>
+
+{% endblock %}

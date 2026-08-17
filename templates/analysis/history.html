@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+    History - InsightAI
+{% endblock %}
+
+
+{% block content %}
+
+<h1>
+    Analysis History
+</h1>
+
+<p>
+    Here you can see all analyses you created.
+</p>
+
+<hr>
+
+
+{% for analysis in analyses %}
+
+    <div>
+
+        <h2>
+            {{ analysis.title }}
+        </h2>
+
+        <p>
+            Type:
+            {{ analysis.get_analysis_type_display }}
+        </p>
+
+        <p>
+            Status:
+            {{ analysis.get_status_display }}
+        </p>
+
+        <p>
+            Created:
+            {{ analysis.created_at }}
+        </p>
+
+        <a href="{% url 'analysis_detail' analysis.id %}">
+            View Analysis
+        </a>
+
+    </div>
+
+    <hr>
+
+{% empty %}
+
+    <p>
+        Your analysis history is empty.
+    </p>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Course — Study Hub{% endblock %}
+{% block page_heading %}Edit Course{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">Edit Course</h1>
+        <p class="page-subtitle">
+            Update your course information.
+        </p>
+    </div>
+</div>
+
+<div class="form-card">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="title">
+                Course Title
+            </label>
+
+            <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-input"
+                value="{{ course.title }}"
+                required
+            >
+        </div>
+
+
+        <div class="grid-2">
+
+            <div class="form-group">
+                <label class="form-label" for="platform">
+                    Platform
+                </label>
+
+                <input
+                    type="text"
+                    id="platform"
+                    name="platform"
+                    class="form-input"
+                    value="{{ course.platform }}"
+                    placeholder="Example: Udemy"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label class="form-label" for="instructor">
+                    Instructor
+                </label>
+
+                <input
+                    type="text"
+                    id="instructor"
+                    name="instructor"
+                    class="form-input"
+                    value="{{ course.instructor }}"
+                    placeholder="Example: Angela Yu"
+                >
+            </div>
+
+        </div>
+
+
+        <div class="grid-2">
+
+            <div class="form-group">
+                <label class="form-label" for="progress">
+                    Progress (%)
+                </label>
+
+                <input
+                    type="number"
+                    id="progress"
+                    name="progress"
+                    class="form-input"
+                    value="{{ course.progress }}"
+                    min="0"
+                    max="100"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label class="form-label" for="status">
+                    Status
+                </label>
+
+                <select
+                    id="status"
+                    name="status"
+                    class="form-select"
+                >
+
+                    <option
+                        value="not_started"
+                        {% if course.status == 'not_started' %}selected{% endif %}
+                    >
+                        Not Started
+                    </option>
+
+                    <option
+                        value="in_progress"
+                        {% if course.status == 'in_progress' %}selected{% endif %}
+                    >
+                        In Progress
+                    </option>
+
+                    <option
+                        value="completed"
+                        {% if course.status == 'completed' %}selected{% endif %}
+                    >
+                        Completed
+                    </option>
+
+                </select>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <label class="form-label" for="link">
+                Course Link
+            </label>
+
+            <input
+                type="url"
+                id="link"
+                name="link"
+                class="form-input"
+                value="{{ course.link }}"
+                placeholder="https://..."
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label class="form-label" for="description">
+                Description
+            </label>
+
+            <textarea
+                id="description"
+                name="description"
+                class="form-textarea"
+                rows="6"
+            >{{ course.description }}</textarea>
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Save Changes
+            </button>
+
+            <a
+                href="{% url 'course_detail' course.id %}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

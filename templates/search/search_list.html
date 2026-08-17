@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Searches - InsightAI
+{% endblock %}
+
+
+{% block content %}
+
+<h1>
+    My Searches
+</h1>
+
+<a href="{% url 'create_search' %}">
+    + New Search
+</a>
+
+<hr>
+
+
+{% for search in searches %}
+
+    <div>
+
+        <h3>
+            🔎 {{ search.query }}
+        </h3>
+
+        <p>
+            {{ search.created_at }}
+        </p>
+
+    </div>
+
+    <hr>
+
+{% empty %}
+
+    <p>
+        You don't have any searches yet.
+    </p>
+
+{% endfor %}
+
+{% endblock %}

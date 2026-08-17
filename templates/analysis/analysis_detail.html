@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{ analysis.title }} — Study Hub{% endblock %}
+{% block page_heading %}{{ analysis.title }}{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb">
+    <a href="{% url 'analysis_list' %}">Analyses</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>{{ analysis.title }}</span>
+</div>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">{{ analysis.title }}</h1>
+        <div class="detail-meta">
+            <span class="badge badge-neutral">{{ analysis.get_analysis_type_display }}</span>
+            <span class="badge badge-primary">{{ analysis.get_status_display }}</span>
+            <span class="badge badge-neutral">{{ analysis.created_at|date:"M d, Y" }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 1.25rem;">
+    <div class="card-header"><h2>Input Data</h2></div>
+    <div class="card-body">
+        <div class="result-block">{{ analysis.input_data }}</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h2>Result</h2></div>
+    <div class="card-body">
+        {% if analysis.result %}
+            <div class="result-block">{{ analysis.result }}</div>
+        {% else %}
+            <div class="empty-state" style="padding: 2rem; border: none;">
+                <p class="text-muted">Analysis result will appear here once processing completes.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<a href="{% url 'analysis_list' %}" class="back-link" style="margin-top: 1.5rem;">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to My Analyses
+</a>
+
+{% endblock %}

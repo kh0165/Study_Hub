@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ course.title }} — Study Hub{% endblock %}
+{% block page_heading %}{{ course.title }}{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'subject_detail' course.subject.id %}" class="back-link">
+    ← Back to {{ course.subject.name }}
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <span class="profile-eyebrow">COURSE</span>
+
+
+    <h1 class="page-title">{{ course.title }}</h1>
+
+    <p class="page-subtitle">
+        {{ course.subject.name }}
+    </p>
+</div>
+
+<div class="page-actions">
+    <a href="{% url 'edit_course' course.id %}"
+       class="btn btn-secondary btn-sm">
+        Edit
+    </a>
+
+    <a href="{% url 'delete_course' course.id %}"
+       class="btn btn-danger-outline btn-sm">
+        Delete
+    </a>
+</div>
+```
+
+</div>
+
+<!-- Course Information -->
+
+<div class="detail-card">
+
+
+<div class="detail-content">
+
+    {% if course.platform or course.instructor %}
+        <div class="meta-row">
+
+            {% if course.platform %}
+                <span>
+                    <strong>Platform:</strong>
+                    {{ course.platform }}
+                </span>
+            {% endif %}
+
+            {% if course.instructor %}
+                <span>
+                    <strong>Instructor:</strong>
+                    {{ course.instructor }}
+                </span>
+            {% endif %}
+
+        </div>
+    {% endif %}
+
+
+    <!-- Progress -->
+
+    <div style="
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--color-border);
+    ">
+
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        ">
+            <strong>Progress</strong>
+            <span>{{ course.progress }}%</span>
+        </div>
+
+        <div style="
+            width: 100%;
+            height: 10px;
+            background: var(--color-border);
+            border-radius: 10px;
+            overflow: hidden;
+        ">
+            <div
+                class="progress-fill"
+                data-progress="{{ course.progress }}"
+                style="height: 100%; background: var(--color-primary);"
+            ></div>
+        </div>
+
+    </div>
+
+    <!-- Status -->
+
+    <div style="margin-top: 1.5rem;">
+
+        <strong>Status:</strong>
+
+        {% if course.status == 'completed' %}
+
+            <span class="badge badge-success">
+                Completed
+            </span>
+
+        {% elif course.status == 'in_progress' %}
+
+            <span class="badge badge-warning">
+                In Progress
+            </span>
+
+        {% else %}
+
+            <span class="badge badge-neutral">
+                Not Started
+            </span>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Description -->
+
+    {% if course.description %}
+
+        <div style="margin-top: 2rem;">
+
+            <h3>Description</h3>
+
+            <div style="margin-top: 0.75rem;">
+                {{ course.description|linebreaks }}
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- Course Link -->
+
+    {% if course.link %}
+
+        <div style="margin-top: 2rem;">
+
+            <a
+                href="{{ course.link }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-primary"
+            >
+                Open Course
+            </a>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- Dates -->
+
+    <div
+        class="meta-row"
+        style="
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        "
+    >
+
+        <span>
+            Created {{ course.created_at|date:"M d, Y" }}
+        </span>
+
+        <span>
+            Updated {{ course.updated_at|date:"M d, Y" }}
+        </span>
+
+    </div>
+
+</div>
+
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/course_progress.js' %}"></script>
+{% endblock %}

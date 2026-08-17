@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Add Assignment — Study Hub{% endblock %}
+{% block page_heading %}Add Assignment{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'subject_detail' subject.id %}" class="back-link">
+    ← Back to {{ subject.name }}
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">Add Assignment</h1>
+        <p class="page-subtitle">
+            Subject: <strong>{{ subject.name }}</strong>
+        </p>
+    </div>
+</div>
+
+<div class="form-card">
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="title">
+                Assignment Title
+            </label>
+
+            <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-input"
+                placeholder="Example: Design Homepage"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">
+                Description
+            </label>
+
+            <textarea
+                id="description"
+                name="description"
+                class="form-textarea"
+                rows="5"
+                placeholder="Describe the assignment..."
+            ></textarea>
+        </div>
+
+        <div class="grid-2">
+
+            <div class="form-group">
+                <label class="form-label" for="due_date">
+                    Due Date
+                </label>
+
+                <input
+                    type="date"
+                    id="due_date"
+                    name="due_date"
+                    class="form-input"
+                >
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="status">
+                    Status
+                </label>
+
+                <select
+                    id="status"
+                    name="status"
+                    class="form-select"
+                >
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="in_progress">
+                        In Progress
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Save Assignment
+            </button>
+
+            <a
+                href="{% url 'subject_detail' subject.id %}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

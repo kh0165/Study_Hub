@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}My Subjects — Study Hub{% endblock %}
+{% block page_heading %}My Subjects{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">My Subjects</h1>
+        <p class="page-subtitle">Organize your learning by subjects.</p>
+    </div>
+    <div class="page-actions">
+        <a href="{% url 'create_subject' %}" class="btn btn-primary">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Subject
+        </a>
+    </div>
+</div>
+
+{% if subjects %}
+    <div class="card-grid">
+        {% for subject in subjects %}
+            <article class="card-item">
+                <h2 class="card-item-title">
+                    <a href="{% url 'subject_detail' subject.id %}">{{ subject.name }}</a>
+                </h2>
+                {% if subject.description %}
+                    <p class="card-item-desc">{{ subject.description|truncatewords:20 }}</p>
+                {% else %}
+                    <p class="card-item-desc text-muted">No description yet.</p>
+                {% endif %}
+                <div class="card-item-meta">
+                    <span>Created {{ subject.created_at|date:"M d, Y" }}</span>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">
+            <svg class="icon icon-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <h3>No subjects yet</h3>
+        <p>Create your first subject to start organizing your studies.</p>
+        <a href="{% url 'create_subject' %}" class="btn btn-primary">Add Subject</a>
+    </div>
+{% endif %}
+
+{% endblock %}

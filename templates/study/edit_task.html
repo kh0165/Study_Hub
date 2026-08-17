@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Task — Study Hub{% endblock %}
+{% block page_heading %}Edit Task{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'task_list' %}" class="back-link">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to planner
+</a>
+
+<div class="page-header">
+    <div class="page-header-text">
+        <h1 class="page-title">Edit Task</h1>
+        <p class="page-subtitle">Update your task details.</p>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="title">Task Title</label>
+            <input type="text" id="title" name="title" class="form-input" value="{{ task.title }}" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="description">Description</label>
+            <textarea id="description" name="description" class="form-textarea" rows="5">{{ task.description }}</textarea>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label" for="due_date">Due Date</label>
+                <input type="date" id="due_date" name="due_date" class="form-input" value="{{ task.due_date|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="priority">Priority</label>
+                <select id="priority" name="priority" class="form-select">
+                    <option value="low"{% if task.priority == 'low' %} selected{% endif %}>Low</option>
+                    <option value="medium"{% if task.priority == 'medium' %} selected{% endif %}>Medium</option>
+                    <option value="high"{% if task.priority == 'high' %} selected{% endif %}>High</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{% url 'task_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

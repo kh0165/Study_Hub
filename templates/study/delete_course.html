@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Course — Study Hub{% endblock %}
+{% block page_heading %}Delete Course{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'course_detail' course.id %}" class="back-link">
+    <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to course
+</a>
+
+<div class="confirm-card">
+    <h1>Delete Course</h1>
+    <p>Are you sure you want to delete this course? This action cannot be undone.</p>
+    <p class="confirm-target">{{ course.title }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="confirm-actions">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'course_detail' course.id %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

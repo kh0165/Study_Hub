@@ -1,0 +1,43 @@
+{% extends "auth_base.html" %}
+
+{% block title %}Create Account — Study Hub{% endblock %}
+
+{% block auth_content %}
+<div class="auth-card">
+    <h1>Create your account</h1>
+    <p class="auth-subtitle">Start organizing your studies today</p>
+
+    {% if error %}
+        <div class="alert alert-error" role="alert">
+            <div class="alert-content">{{ error }}</div>
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input type="text" id="name" name="name" class="form-input" placeholder="Your name" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-input" placeholder="Choose a strong password" required>
+        </div>
+
+        <div class="form-actions" style="border-top: none; padding-top: 0; margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+        </div>
+    </form>
+
+    <div class="auth-footer">
+        Already have an account? <a href="{% url 'login' %}">Sign in</a>
+    </div>
+</div>
+{% endblock %}

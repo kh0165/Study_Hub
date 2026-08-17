@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}{{ assignment.title }} — Study Hub{% endblock %}
+{% block page_heading %}{{ assignment.title }}{% endblock %}
+
+{% block content %}
+
+<div class="breadcrumb">
+
+    <a href="{% url 'subject_detail' assignment.subject.id %}">
+        {{ assignment.subject.name }}
+    </a>
+
+    <span class="breadcrumb-sep">/</span>
+
+    <span>{{ assignment.title }}</span>
+
+</div>
+
+
+<div class="page-header">
+
+    <div class="page-header-text">
+
+        <h1 class="page-title">
+            {{ assignment.title }}
+        </h1>
+
+        <div class="detail-meta">
+
+            <span class="badge badge-neutral">
+                {{ assignment.subject.name }}
+            </span>
+
+            {% if assignment.status == 'completed' %}
+
+                <span class="badge badge-success">
+                    Completed
+                </span>
+
+            {% elif assignment.status == 'in_progress' %}
+
+                <span class="badge badge-warning">
+                    In Progress
+                </span>
+
+            {% else %}
+
+                <span class="badge badge-neutral">
+                    Pending
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <div class="page-actions">
+
+        <a
+            href="{% url 'edit_assignment' assignment.id %}"
+            class="btn btn-secondary btn-sm"
+        >
+            Edit
+        </a>
+
+        <form
+            method="POST"
+            action="{% url 'delete_assignment' assignment.id %}"
+            style="display:inline;"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="btn btn-danger-outline btn-sm"
+                onclick="return confirm('Delete this assignment?');"
+            >
+                Delete
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div class="detail-card">
+
+    {% if assignment.description %}
+
+        <div class="detail-content">
+            {{ assignment.description|linebreaks }}
+        </div>
+
+    {% else %}
+
+        <div class="detail-content">
+            No description provided.
+        </div>
+
+    {% endif %}
+
+
+    {% if assignment.due_date %}
+
+        <div
+            class="meta-row"
+            style="
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+                border-top: 1px solid var(--color-border);
+            "
+        >
+
+            <span>
+                Due {{ assignment.due_date|date:"M d, Y" }}
+            </span>
+
+            <span>
+                Created {{ assignment.created_at|date:"M d, Y" }}
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<a
+    href="{% url 'subject_detail' assignment.subject.id %}"
+    class="back-link"
+>
+    ← Back to {{ assignment.subject.name }}
+</a>
+
+{% endblock %}

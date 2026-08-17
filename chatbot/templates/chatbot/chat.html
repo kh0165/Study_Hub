@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+AI Study Assistant — Study Hub
+{% endblock %}
+
+
+{% block page_heading %}
+AI Study Assistant
+{% endblock %}
+
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/chatbot.css' %}"
+>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="chatbot-page">
+
+    <div class="page-header">
+
+        <div class="page-header-text">
+
+            <h1 class="page-title">
+                AI Study Assistant
+            </h1>
+
+            <p class="page-subtitle">
+                Your personal AI assistant for studying and organizing your work.
+            </p>
+
+        </div>
+
+
+        <div class="page-actions">
+
+            <a
+                href="{% url 'chatbot_new' %}"
+                class="btn btn-primary"
+            >
+                + New Chat
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="chatbot-layout">
+
+
+        <!-- Conversations -->
+
+        <aside class="chatbot-conversations card">
+
+            <div class="card-header">
+
+                <h2>
+                    Conversations
+                </h2>
+
+            </div>
+
+
+            <div class="chatbot-conversation-list">
+
+                {% if conversations %}
+
+                    {% for item in conversations %}
+
+                        <a
+                            href="?conversation={{ item.id }}"
+                            class="
+                                chatbot-conversation-item
+                                {% if conversation and conversation.id == item.id %}
+                                    is-active
+                                {% endif %}
+                            "
+                        >
+
+                            <div class="chatbot-conversation-title">
+                                {{ item.title|truncatechars:35 }}
+                            </div>
+
+                            <div class="chatbot-conversation-date">
+                                {{ item.updated_at|date:"M d, Y" }}
+                            </div>
+
+                        </a>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="chatbot-empty-conversations">
+
+                        <p>
+                            No conversations yet.
+                        </p>
+
+                        <a
+                            href="{% url 'chatbot_new' %}"
+                            class="btn btn-secondary btn-sm"
+                        >
+                            Start a chat
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main Chat -->
+
+        <section class="chatbot-main card">
+
+            {% if conversation %}
+
+
+                <div class="chatbot-header">
+
+                    <div>
+
+                        <h2>
+                            {{ conversation.title }}
+                        </h2>
+
+                        <p>
+                            StudyHub AI Assistant
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="chatbot-messages"
+                    id="chatbot-messages"
+                >
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div
+                                class="
+                                    chatbot-message
+                                    {% if message.role == 'user' %}
+                                        chatbot-message-user
+                                    {% else %}
+                                        chatbot-message-ai
+                                    {% endif %}
+                                "
+                            >
+
+                                <div class="chatbot-avatar">
+
+                                    {% if message.role == 'user' %}
+
+                                        {{ request.user.username|slice:":1"|upper }}
+
+                                    {% else %}
+
+                                        AI
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="chatbot-message-content">
+
+                                    <div class="chatbot-message-role">
+
+                                        {% if message.role == 'user' %}
+
+                                            You
+
+                                        {% else %}
+
+                                            StudyHub AI
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="chatbot-message-text">
+
+                                        {{ message.content|linebreaksbr }}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+
+                    {% else %}
+
+
+                        <div class="chatbot-welcome">
+
+                            <div class="chatbot-welcome-icon">
+                                AI
+                            </div>
+
+
+                            <h2>
+                                Hi {{ request.user.username }} 👋
+                            </h2>
+
+
+                            <p>
+                                I'm your StudyHub AI Assistant.
+                                Ask me about your notes, subjects,
+                                tasks, assignments, courses,
+                                or anything you want to understand.
+                            </p>
+
+
+                            <div class="chatbot-suggestions">
+
+
+                                <button
+                                    type="button"
+                                    class="chatbot-suggestion"
+                                    data-message="What should I study today?"
+                                >
+                                    What should I study today?
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="chatbot-suggestion"
+                                    data-message="Explain one of my recent notes."
+                                >
+                                    Explain one of my recent notes.
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="chatbot-suggestion"
+                                    data-message="Show me my pending tasks."
+                                >
+                                    Show me my pending tasks.
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="chatbot-suggestion"
+                                    data-message="Help me plan my study time."
+                                >
+                                    Help me plan my study time.
+                                </button>
+
+
+                            </div>
+
+                        </div>
+
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="chatbot-input-area">
+
+                    <form
+                        id="chatbot-form"
+                        data-send-url="{% url 'chatbot_send' %}"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <input
+                            type="hidden"
+                            id="conversation-id"
+                            value="{{ conversation.id }}"
+                        >
+
+
+                        <div class="chatbot-input-wrapper">
+
+                            <textarea
+                                id="chatbot-input"
+                                name="message"
+                                class="form-textarea chatbot-input"
+                                placeholder="Ask me anything about your studies..."
+                                rows="1"
+                                required
+                            ></textarea>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary chatbot-send-btn"
+                                id="chatbot-send-btn"
+                            >
+                                Send
+                            </button>
+
+                        </div>
+
+
+                        <div class="chatbot-input-hint">
+                            Press Enter to send • Shift + Enter for a new line
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+            {% else %}
+
+
+                <div class="chatbot-no-conversation">
+
+                    <div class="empty-state">
+
+                        <div class="empty-state-icon">
+                            AI
+                        </div>
+
+
+                        <h3>
+                            Start a new conversation
+                        </h3>
+
+
+                        <p>
+                            Ask the StudyHub AI Assistant about your
+                            notes, tasks, assignments, or courses.
+                        </p>
+
+
+                        <a
+                            href="{% url 'chatbot_new' %}"
+                            class="btn btn-primary"
+                        >
+                            Start New Chat
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'js/chatbot.js' %}"
+></script>
+
+{% endblock %}
