@@ -62,24 +62,42 @@ study-hub/
 
 ## Installation
 1. Clone the Repository
+```bash
 git clone https://github.com/kh0165/Study_Hub.git
 cd Study_Hub
+```
 
-2. Create a Virtual Environment
+### 2. Create a Virtual Environment
+
+```bash
 python -m venv venv
+```
 
-3. Activate the Virtual Environment
-macOS / Linux
+### 3. Activate the Virtual Environment
+
+#### macOS / Linux
+
+```bash
 source venv/bin/activate
+```
 
-Windows
+#### Windows
+
+```bash
 venv\Scripts\activate
+```
 
-4. Install Dependencies
+### 4. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-5. Create a .env File
-Create a .env file in the project root and add:
+### 5. Create a `.env` File
+
+Create a `.env` file in the project root and add:
+
+```env
 DB_NAME=final_project_db
 DB_USER=postgres
 DB_PASSWORD=your_database_password
@@ -88,34 +106,47 @@ DB_PORT=5432
 
 EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_gmail_app_password
+```
 
-⚠️ Never upload your .env file to GitHub because it contains sensitive information.
+### 6. Apply Migrations
 
-6. Create the PostgreSQL Database
-Create a PostgreSQL database named:
-final_project_db
-
-7. Apply Migrations
+```bash
 python manage.py migrate
+```
+
+### 7. Run the Project
+
+```bash
+python manage.py runserver
+```
 
 8. Run the Project
+```bash
 python manage.py runserver
 Then open:
 http://127.0.0.1:8000/
-
+```
 ##  Password Reset
+
 The project supports password reset via email using Gmail SMTP.
+
 Users can:
-Open the Forgot Password page.
-Enter their registered email address.
-Receive a password reset link.
-Set a new password.
-Log in with the new password.
+
+1. Open the Forgot Password page.
+2. Enter their registered email address.
+3. Receive a password reset link.
+4. Set a new password.
+5. Log in with the new password.
+
 For Gmail SMTP, use a Google App Password instead of your normal Gmail password.
 
 ##  Environment Variables
+
 The project uses environment variables to keep sensitive information secure.
+
 Example:
+
+```env
 DB_NAME=final_project_db
 DB_USER=postgres
 DB_PASSWORD=your_database_password
@@ -124,9 +155,14 @@ DB_PORT=5432
 
 EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_gmail_app_password
+```
 
 ##  Git Workflow
+
 After making changes:
+
+```bash
 git add .
 git commit -m "Describe your changes"
 git push
+```
